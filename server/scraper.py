@@ -43,7 +43,7 @@ def scrape_seongnam_events_page(page_number):
 
             image_span = event.find("span", class_="img")
             image_src = image_span.find(
-                "img")["src"] if image_span else "이미지를 찾을 수 없습니다."
+                "img").get("src", "이미지를 찾을 수 없습니다.") if image_span else "이미지를 찾을 수 없습니다."
 
             if state in ["진행중", "진행예정"]:
                 events_on_page.append({
