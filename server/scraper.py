@@ -43,7 +43,8 @@ def scrape_seongnam_events_page(page_number):
                     "title": title,
                     "link": absolute_link,
                     "state": state,
-                    "category": category,
+                    "category": category.split("·")[0].strip(),
+                    "audience": category.split("·")[1].strip(),
                     "date": date,
                     "source": "성남시청"
                 })

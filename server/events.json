@@ -1,9 +1,100 @@
 [
     {
+        "title": "제15회 성남 남한산성 전국가요제",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3449",
+        "state": "진행예정",
+        "category": "기타",
+        "audience": "누구나",
+        "date": "2025.08.23~2025.08.23",
+        "source": "성남시청"
+    },
+    {
+        "title": "청춘남녀 만남행사 SOLO MON의 선택 참가자 접수 안내",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3448",
+        "state": "진행중",
+        "category": "기타",
+        "audience": "청년",
+        "date": "2025.08.18~2025.09.05",
+        "source": "성남시청"
+    },
+    {
+        "title": "2025 시민과 함께하는 창작영화제",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3447",
+        "state": "진행예정",
+        "category": "기타",
+        "audience": "만6세이상",
+        "date": "2025.08.27~2025.08.27",
+        "source": "성남시청"
+    },
+    {
+        "title": "성남물빛정원 9월 14일 공연 리수스콰르텟과 김보영",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3445",
+        "state": "진행예정",
+        "category": "공연",
+        "audience": "8세 이상",
+        "date": "2025.09.14~2025.09.14",
+        "source": "성남시청"
+    },
+    {
+        "title": "2025년 성남시 사회복지 페스티벌",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3444",
+        "state": "진행예정",
+        "category": "축제",
+        "audience": "누구나",
+        "date": "2025.09.04~2025.09.04",
+        "source": "성남시청"
+    },
+    {
+        "title": "제31회 전국 학생 음악 경연대회",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3443",
+        "state": "진행예정",
+        "category": "대회",
+        "audience": "공고문참고",
+        "date": "2025.11.01~2025.11.01",
+        "source": "성남시청"
+    },
+    {
+        "title": "2025 성남 박태현 전국 창작동요제 참가요강",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3442",
+        "state": "진행예정",
+        "category": "공모",
+        "audience": "공고문참고",
+        "date": "2025.09.15~2025.09.19",
+        "source": "성남시청"
+    },
+    {
+        "title": "문화와 예술이 어우러지는 미니콘서트 7회",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3440",
+        "state": "진행예정",
+        "category": "기타",
+        "audience": "누구나",
+        "date": "2025.08.30~2025.08.30",
+        "source": "성남시청"
+    },
+    {
+        "title": "2025 게임진로 탐색 프로그램 GV2025",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3439",
+        "state": "진행중",
+        "category": "기타",
+        "audience": "청소년",
+        "date": "2025.08.11~2025.09.18",
+        "source": "성남시청"
+    },
+    {
+        "title": "성남물빛정원 개관음악회 9월 7일과 9월 8일",
+        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3438",
+        "state": "진행예정",
+        "category": "공연",
+        "audience": "8세 이상",
+        "date": "2025.09.07~2025.09.08",
+        "source": "성남시청"
+    },
+    {
         "title": "2025 성남 청소년 교향악 페스티벌",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3437",
         "state": "진행예정",
-        "category": "축제· 누구나",
+        "category": "축제",
+        "audience": "누구나",
         "date": "2025.08.22~2025.09.27",
         "source": "성남시청"
     },
@@ -11,47 +102,26 @@
         "title": "「스마트한 영어 독서법」인문학 특강",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3436",
         "state": "진행예정",
-        "category": "강좌· 누구나",
+        "category": "강좌",
+        "audience": "누구나",
         "date": "2025.08.28~2025.08.28",
-        "source": "성남시청"
-    },
-    {
-        "title": "2025년 성남큐브미술관 소장품 구입 공모",
-        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3430",
-        "state": "진행중",
-        "category": "공모· 누구나",
-        "date": "2025.07.21~2025.08.11",
-        "source": "성남시청"
-    },
-    {
-        "title": "제28회 성남창작무용제 개최요강",
-        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3427",
-        "state": "진행중",
-        "category": "공모· 공고문참고",
-        "date": "2025.07.16~2025.08.15",
         "source": "성남시청"
     },
     {
         "title": "제28회 강정일당상 후보자 접수",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3423",
         "state": "진행중",
-        "category": "기타· 여성",
+        "category": "기타",
+        "audience": "여성",
         "date": "2025.07.11~2025.08.29",
-        "source": "성남시청"
-    },
-    {
-        "title": "2025년 성남시 규제혁신 아이디어 공모전",
-        "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3419",
-        "state": "진행중",
-        "category": "공모· 누구나",
-        "date": "2025.07.14~2025.08.18",
         "source": "성남시청"
     },
     {
         "title": "서강대학교 글로벌 반도체설계 전문가과정 교육생 모집",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3390",
         "state": "진행중",
-        "category": "강좌· 청년",
+        "category": "강좌",
+        "audience": "청년",
         "date": "2025.07.07~2025.11.28",
         "source": "성남시청"
     },
@@ -59,7 +129,8 @@
         "title": "건강 인 챌린지 사진·영상 시민 공모전",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3383",
         "state": "진행중",
-        "category": "공모· 성남시민등",
+        "category": "공모",
+        "audience": "성남시민등",
         "date": "2025.06.09~2025.09.08",
         "source": "성남시청"
     },
@@ -67,7 +138,8 @@
         "title": "수진동 공동육아나눔터 이용안내",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3316",
         "state": "진행중",
-        "category": "기타· 어린이",
+        "category": "기타",
+        "audience": "어린이",
         "date": "2025.03.24~2025.12.31",
         "source": "성남시청"
     },
@@ -75,9 +147,34 @@
         "title": "성남게임힐링센터 2025 게임이용중심 심리정서상담",
         "link": "https://www.seongnam.go.kr/apply/view.do?appIdx=3281",
         "state": "진행중",
-        "category": "기타· 누구나",
+        "category": "기타",
+        "audience": "누구나",
         "date": "2025.02.19~2025.11.30",
         "source": "성남시청"
+    },
+    {
+        "title": "9월 <친구야 놀자!> 사회성 프로그램 모집",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=57b8daeb174f8f69265e58b70f377762&page=1",
+        "state": "진행예정",
+        "category": "기타",
+        "date": "2025-08-19",
+        "source": "성남시청소년재단"
+    },
+    {
+        "title": "문해력 챌린지 독서로 키우기 참가자 모집",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=093d8cb1fd39acb8b6914d5de4030326&page=1",
+        "state": "진행예정",
+        "category": "기타",
+        "date": "2025-08-13",
+        "source": "성남시청소년재단"
+    },
+    {
+        "title": "2025년 9월 강좌 접수 안내 및 평생교육 및 생활체육 프로그램 안내(최종)",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=5b0c466fcc897d090f2cb228da4a9973&page=1",
+        "state": "진행예정",
+        "category": "기타",
+        "date": "2025-08-11",
+        "source": "성남시청소년재단"
     },
     {
         "title": "C.O.C(circle of change) 청년 디자이너 모집",
@@ -217,7 +314,7 @@
     },
     {
         "title": "사계절 소풍놀이 [여름] 참가자 모집",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=8295a9352a85c6478b88cb0b80d3a496&page=1",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=8295a9352a85c6478b88cb0b80d3a496&page=2",
         "state": "진행예정",
         "category": "기타",
         "date": "2025-05-21",
@@ -225,7 +322,7 @@
     },
     {
         "title": "2025. 판교 『힐링로드』 축제 - 널다리 봄날의 소풍",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=7737d6b00999c5a8982e1bc1af16435d&page=1",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=7737d6b00999c5a8982e1bc1af16435d&page=2",
         "state": "진행예정",
         "category": "기타",
         "date": "2025-05-15",
@@ -233,7 +330,7 @@
     },
     {
         "title": "판교유스센터 6월 [친구야 놀자!] 프로그램 접수 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=b8bd19e96cd3751135823ee1075957ba&page=1",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=b8bd19e96cd3751135823ee1075957ba&page=2",
         "state": "진행예정",
         "category": "기타",
         "date": "2025-05-12",
@@ -377,7 +474,7 @@
     },
     {
         "title": "2025년 청년글로벌기획단『청옥』6기 모집",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=fed3077ddc90629c923fe286f58add90&page=2",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=fed3077ddc90629c923fe286f58add90&page=3",
         "state": "진행예정",
         "category": "기타",
         "date": "2025-01-31",
@@ -385,7 +482,7 @@
     },
     {
         "title": "2025년 성남시 청년 희망 인턴 모집중(2.7.(금)까지)",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=427fad1b8d57b7663e535cadb7cb1796&page=2",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=427fad1b8d57b7663e535cadb7cb1796&page=3",
         "state": "진행예정",
         "category": "기타",
         "date": "2025-01-31",
@@ -393,7 +490,7 @@
     },
     {
         "title": "2025년 수영 2월 진도반 방문 상담 및 추첨제 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=b8a109457f5739b41eb59328d8c31665&page=2",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=b8a109457f5739b41eb59328d8c31665&page=3",
         "state": "진행예정",
         "category": "기타",
         "date": "2025-01-22",
@@ -537,7 +634,7 @@
     },
     {
         "title": "2024 숲 환경 생태학교 모집공고문",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=3807ec46a390d0d3434c25b2568d8c2a&page=3",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=3807ec46a390d0d3434c25b2568d8c2a&page=4",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-10-08",
@@ -545,7 +642,7 @@
     },
     {
         "title": "2024년 11월 강좌 접수 안내 및 평생교육 및 생활체육 프로그램 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=46ed90a736ed961d7b303062722e5cfa&page=3",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=46ed90a736ed961d7b303062722e5cfa&page=4",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-10-04",
@@ -553,7 +650,7 @@
     },
     {
         "title": "2024.수영 10월 진도반 방문 상담 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=3f53e7631d494428427d2ae78a29e9c0&page=3",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=3f53e7631d494428427d2ae78a29e9c0&page=4",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-09-23",
@@ -697,7 +794,7 @@
     },
     {
         "title": "2024년 수영 8월 진도반 방문 상담 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=ee3da1cbd4feeab25c95373379c35b6b&page=4",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=ee3da1cbd4feeab25c95373379c35b6b&page=5",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-07-22",
@@ -705,7 +802,7 @@
     },
     {
         "title": "<온&온 학습지원사업> 2024. 여름방학 문해력 특강 『판수네의 문(해력)단속-3기』",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=d2eacd5fcfe5a24d6c256397cadac429&page=4",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=d2eacd5fcfe5a24d6c256397cadac429&page=5",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-07-08",
@@ -713,7 +810,7 @@
     },
     {
         "title": "2024년 8월 강좌 접수 안내 및 평생교육 및 생활체육 프로그램 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=2ff3d79cc19bab15cc44994ec3baa214&page=4",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=2ff3d79cc19bab15cc44994ec3baa214&page=5",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-07-08",
@@ -857,7 +954,7 @@
     },
     {
         "title": "성남시청소년어울림마당『개막행사』‘뉴리티지 청소년 취향 맛zip’ 참가신청",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=79573f1948eeb9568fb27a324fb89cfa&page=5",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=79573f1948eeb9568fb27a324fb89cfa&page=6",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-04-03",
@@ -865,7 +962,7 @@
     },
     {
         "title": "생태체험 『사계절 소풍놀이 - 봄』 참가자 모집 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=0368bc9a3f0b8ddd7017c702dd740fbf&page=5",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=0368bc9a3f0b8ddd7017c702dd740fbf&page=6",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-03-28",
@@ -873,7 +970,7 @@
     },
     {
         "title": "[놀이로 키우는 사회성] 프로그램 접수 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=949661905e118f5bf6e30a559d3d88e1&page=5",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=949661905e118f5bf6e30a559d3d88e1&page=6",
         "state": "진행예정",
         "category": "기타",
         "date": "2024-03-27",
@@ -1017,7 +1114,7 @@
     },
     {
         "title": "【2024년도 1월 강좌 추첨제】시행 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=ce6f7effc6a7ca125be89786bfd3dce6&page=6",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=ce6f7effc6a7ca125be89786bfd3dce6&page=7",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-12-07",
@@ -1025,7 +1122,7 @@
     },
     {
         "title": "2023년 수영 12월 진도반 방문 상담 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=fb903afe8f207958dd487e8cf219c32a&page=6",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=fb903afe8f207958dd487e8cf219c32a&page=7",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-11-22",
@@ -1033,7 +1130,7 @@
     },
     {
         "title": "2023년 12월 강좌 접수 안내 및 평생교육 및 생활스포츠 프로그램 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=711c7c27b68c6c7818239d82cf8f526d&page=6",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=711c7c27b68c6c7818239d82cf8f526d&page=7",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-11-09",
@@ -1177,7 +1274,7 @@
     },
     {
         "title": "청소년상담실  『심심free Book』 독서 집단상담",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=59c58ab25477eef37a0a1d2934681695&page=7",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=59c58ab25477eef37a0a1d2934681695&page=8",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-06-16",
@@ -1185,7 +1282,7 @@
     },
     {
         "title": "청소년상담실  『Book's Family!』",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=43495272c09c223a5fd3901f155f9e80&page=7",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=43495272c09c223a5fd3901f155f9e80&page=8",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-06-16",
@@ -1193,7 +1290,7 @@
     },
     {
         "title": "[최종]2023년 7월 강좌 접수 안내 및 평생교육 및 생활스포츠 프로그램 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=b5c79ced3d356dd4223bb59634fcb115&page=7",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=b5c79ced3d356dd4223bb59634fcb115&page=8",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-06-13",
@@ -1337,7 +1434,7 @@
     },
     {
         "title": "[최종]2023년 수영 2월 진도반 방문 상담 안내",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=34e9257c3ecdd08e47a2e53619d71f26&page=8",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=34e9257c3ecdd08e47a2e53619d71f26&page=9",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-01-20",
@@ -1345,7 +1442,7 @@
     },
     {
         "title": "2023년 청소년생태탐사단 『수피아』 단원 모집",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=457c437129f613a12dbf712b6ce8b86a&page=8",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=457c437129f613a12dbf712b6ce8b86a&page=9",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-01-19",
@@ -1353,7 +1450,7 @@
     },
     {
         "title": "온앤온 학습지원 사업 '계묘한 겨울방학'",
-        "link": "https://www.snyouth.or.kr?action=read&action-value=893b4980b223dfda4ebc7b0f0541213a&page=8",
+        "link": "https://www.snyouth.or.kr?action=read&action-value=893b4980b223dfda4ebc7b0f0541213a&page=9",
         "state": "진행예정",
         "category": "기타",
         "date": "2023-01-16",
