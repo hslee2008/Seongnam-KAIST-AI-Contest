@@ -51,7 +51,7 @@ def scrape_seongnam_events_page(page_number):
                     "link": absolute_link,
                     "state": state,
                     "category": category.split("·")[0].strip(),
-                    "audience": category.split("·")[1].strip(),
+                    "audience": category.split("·")[1].strip() if len(category.split("·")) > 1 else "",
                     "image": "https://www.seongnam.go.kr" + image_src,
                     "date": date,
                     "source": "성남시청"
