@@ -2,6 +2,7 @@ import subprocess
 import json
 from bs4 import BeautifulSoup
 
+
 def scrape_seongnam_events_page(page_number):
     url = "https://www.seongnam.go.kr/apply/event.do"
     events_on_page = []
@@ -35,8 +36,14 @@ def scrape_seongnam_events_page(page_number):
 
             text_span = event.find("span", class_="text")
             state = text_span.find("span", class_="state").get_text(strip=True)
-            category = text_span.find("span", class_="category").get_text(strip=True)
-            date = text_span.find("span", class_="date").get_text(strip=True).replace("\r\n", "").replace("\t", "").strip()
+            category = text_span.find(
+                "span", class_="category").get_text(strip=True)
+            date = text_span.find("span", class_="date").get_text(
+                strip=True).replace("\r\n", "").replace("\t", "").strip()
+
+            image_span = event.find("span", class_="img")
+            image_src = image_span.find(
+                "img")["src"] if image_span else "이미지를 찾을 수 없습니다."
 
             if state in ["진행중", "진행예정"]:
                 events_on_page.append({
@@ -45,6 +52,7 @@ def scrape_seongnam_events_page(page_number):
                     "state": state,
                     "category": category.split("·")[0].strip(),
                     "audience": category.split("·")[1].strip(),
+                    "image": "https://www.seongnam.go.kr" + image_src,
                     "date": date,
                     "source": "성남시청"
                 })
@@ -54,8 +62,9 @@ def scrape_seongnam_events_page(page_number):
         print(f"표준 오류: {e.stderr}")
     except Exception as e:
         print(f"{page_number}페이지에서 오류가 발생했습니다: {e}")
-        
+
     return events_on_page
+
 
 def scrape_snyouth_events_page(page_number):
     url = f"https://www.snyouth.or.kr/fmcs/123?page={page_number}"
@@ -81,11 +90,10 @@ def scrape_snyouth_events_page(page_number):
             title = title_cell.get_text(strip=True)
             link = title_cell.find("a")["href"]
             absolute_link = f"https://www.snyouth.or.kr{link}"
-            
+
             date_cell = event.find_all("td")[4]
             date = date_cell.get_text(strip=True).replace("등록일자", "")
 
-        
             events_on_page.append({
                 "title": title,
                 "link": absolute_link,
@@ -100,8 +108,9 @@ def scrape_snyouth_events_page(page_number):
         print(f"표준 오류: {e.stderr}")
     except Exception as e:
         print(f"{page_number}페이지에서 오류가 발생했습니다: {e}")
-        
+
     return events_on_page
+
 
 def main():
     all_events = []
@@ -112,14 +121,14 @@ def main():
         if not events:
             print(f"seongnam.go.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
             break
-        
+
         all_events.extend(events)
         print(f"{page}페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
 
         if not any(event['state'] in ['진행중', '진행예정'] for event in events):
             print(f"{page}페이지에서 '진행중' 또는 '진행예정'인 이벤트를 더 이상 찾을 수 없습니다. 중지합니다.")
             break
-            
+
         page += 1
     page = 1
     while True:
@@ -128,7 +137,7 @@ def main():
         if not events:
             print(f"snyouth.or.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
             break
-        
+
         all_events.extend(events)
         print(f"{page}페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
         page += 1
@@ -137,6 +146,7 @@ def main():
         json.dump(all_events, f, ensure_ascii=False, indent=4)
 
     print(f"스크래핑 완료. 총 {len(all_events)}개의 이벤트를 찾았으며 events.json에 저장했습니다.")
+
 
 if __name__ == "__main__":
     main()
