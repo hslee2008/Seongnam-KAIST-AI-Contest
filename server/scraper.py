@@ -1,14 +1,43 @@
 import subprocess
 import json
 from bs4 import BeautifulSoup
-from crawl4ai import *
+
 
 
 '''
 소스: 성남시청
 링크: https://www.seongnam.go.kr/apply/event.do
 '''
-async def scrape_seongnam_events_page(page_number):
+def deep_scrape_seongnam_event_page(link):
+    event_data = ""
+    
+    try:
+        result = subprocess.run(
+            ["curl", "-d", "", link],
+            capture_output=True, check=True
+        )
+        html_content = result.stdout.decode('utf-8')
+
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        event_list = soup.find("div", class_="sub")
+
+        if not event_list:
+            print("페이지를 찾을 수 없습니다.")
+            return []
+
+        event_data = str(event_list)
+
+    except subprocess.CalledProcessError as e:
+        print(f"{link} 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
+        print(f"표준 오류: {e.stderr}")
+
+    except Exception as e:
+        print(f"{link} 페이지에서 오류가 발생했습니다: {e}")
+
+    return event_data
+
+def scrape_seongnam_events_page(page_number):
     url = "https://www.seongnam.go.kr/apply/event.do"
     events_on_page = []
 
@@ -50,24 +79,19 @@ async def scrape_seongnam_events_page(page_number):
 
             image_span = event.find("span", class_="img")
             image_src = image_span.find(
-                "img").get("src", "이미지를 찾을 수 없습니다.") if image_span else "이미지를 찾을 수 없습니다."
+                "img")["src"] if image_span else "이미지를 찾을 수 없습니다."
 
             if state in ["진행중", "진행예정"]:
-                async with AsyncWebCrawler() as crawler:
-                res = await crawler.arun(
-                    url=absolute_link
-                )
-                print(res.markdown)
-
                 events_on_page.append({
                     "title": title,
                     "link": absolute_link,
                     "state": state,
                     "category": category.split("·")[0].strip(),
-                    "audience": category.split("·")[1].strip() if len(category.split("·")) > 1 else "",
+                    "audience": category.split("·")[1].strip(),
                     "image": "https://www.seongnam.go.kr" + image_src,
                     "date": date,
-                    "source": "성남시청"
+                    "source": "성남시청",
+                    "deep_data": deep_scrape_seongnam_event_page(absolute_link)
                 })
 
     except subprocess.CalledProcessError as e:
