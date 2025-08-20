@@ -2,7 +2,10 @@ import subprocess
 import json
 from bs4 import BeautifulSoup
 
-
+'''
+소스: 성남시청
+링크: https://www.seongnam.go.kr/apply/event.do
+'''
 def scrape_seongnam_events_page(page_number):
     url = "https://www.seongnam.go.kr/apply/event.do"
     events_on_page = []
@@ -69,6 +72,10 @@ def scrape_seongnam_events_page(page_number):
     return events_on_page
 
 
+'''
+소스: 성남시총서년청년재단
+링크: https://www.snyouth.or.kr/
+'''
 def scrape_snyouth_events_page(page_number):
     url = f"https://www.snyouth.or.kr/fmcs/123?page={page_number}"
     events_on_page = []
