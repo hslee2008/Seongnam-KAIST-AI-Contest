@@ -3,16 +3,6 @@ import json
 from bs4 import BeautifulSoup
 from crawl4ai import *
 
-@software{crawl4ai2024,
-  author = {UncleCode},
-  title = {Crawl4AI: Open-source LLM Friendly Web Crawler & Scraper},
-  year = {2024},
-  publisher = {GitHub},
-  journal = {GitHub Repository},
-  howpublished = {\url{https://github.com/unclecode/crawl4ai}},
-  commit = {}
-}
-
 
 '''
 소스: 성남시청
@@ -63,6 +53,12 @@ async def scrape_seongnam_events_page(page_number):
                 "img").get("src", "이미지를 찾을 수 없습니다.") if image_span else "이미지를 찾을 수 없습니다."
 
             if state in ["진행중", "진행예정"]:
+                async with AsyncWebCrawler() as crawler:
+                res = await crawler.arun(
+                    url=absolute_link
+                )
+                print(res.markdown)
+
                 events_on_page.append({
                     "title": title,
                     "link": absolute_link,
