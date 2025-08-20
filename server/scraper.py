@@ -6,13 +6,14 @@ from bs4 import BeautifulSoup
 def scrape_seongnam_events_page(page_number):
     url = "https://www.seongnam.go.kr/apply/event.do"
     events_on_page = []
+    
     try:
         result = subprocess.run(
             ["curl", "-d", f"currentPage={page_number}", url],
             capture_output=True, check=True
         )
         html_content = result.stdout.decode('utf-8')
-
+        
         soup = BeautifulSoup(html_content, "html.parser")
 
         event_list = soup.find("div", class_="event_img_list")
@@ -27,12 +28,13 @@ def scrape_seongnam_events_page(page_number):
             title = event.find("span", class_="name").get_text(strip=True)
             onclick_attr = event.get("onclick", "")
             app_idx_parts = onclick_attr.split("goView('")
+        
             if len(app_idx_parts) > 1:
                 app_idx = app_idx_parts[1].split("')")[0]
                 app_idx = ''.join(filter(str.isdigit, app_idx.split(',')[0]))
                 absolute_link = f"https://www.seongnam.go.kr/apply/view.do?appIdx={app_idx}"
             else:
-                absolute_link = "Link not found"
+                absolute_link = "링크를 찾을 수 없습니다."
 
             text_span = event.find("span", class_="text")
             state = text_span.find("span", class_="state").get_text(strip=True)
@@ -60,6 +62,7 @@ def scrape_seongnam_events_page(page_number):
     except subprocess.CalledProcessError as e:
         print(f"{page_number}페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
         print(f"표준 오류: {e.stderr}")
+        
     except Exception as e:
         print(f"{page_number}페이지에서 오류가 발생했습니다: {e}")
 
@@ -69,6 +72,7 @@ def scrape_seongnam_events_page(page_number):
 def scrape_snyouth_events_page(page_number):
     url = f"https://www.snyouth.or.kr/fmcs/123?page={page_number}"
     events_on_page = []
+    
     try:
         result = subprocess.run(["curl", url], capture_output=True, check=True)
         html_content = result.stdout.decode('utf-8')
@@ -85,8 +89,10 @@ def scrape_snyouth_events_page(page_number):
 
         for event in events:
             title_cell = event.find("td", class_="text-left")
+            
             if not title_cell:
                 continue
+            
             title = title_cell.get_text(strip=True)
             link = title_cell.find("a")["href"]
             absolute_link = f"https://www.snyouth.or.kr{link}"
@@ -106,6 +112,7 @@ def scrape_snyouth_events_page(page_number):
     except subprocess.CalledProcessError as e:
         print(f"{page_number}페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
         print(f"표준 오류: {e.stderr}")
+        
     except Exception as e:
         print(f"{page_number}페이지에서 오류가 발생했습니다: {e}")
 
@@ -114,10 +121,13 @@ def scrape_snyouth_events_page(page_number):
 
 def main():
     all_events = []
+    
     page = 1
     while True:
         print(f"seongnam.go.kr {page}페이지를 스크래핑하는 중...")
+
         events = scrape_seongnam_events_page(page)
+        
         if not events:
             print(f"seongnam.go.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
             break
@@ -130,16 +140,20 @@ def main():
             break
 
         page += 1
+        
     page = 1
     while True:
         print(f"snyouth.or.kr {page}페이지를 스크래핑하는 중...")
+        
         events = scrape_snyouth_events_page(page)
+        
         if not events:
             print(f"snyouth.or.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
             break
 
         all_events.extend(events)
         print(f"{page}페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
+        
         page += 1
 
     with open("events.json", "w", encoding="utf-8") as f:
