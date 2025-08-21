@@ -7,9 +7,11 @@ from bs4 import BeautifulSoup
 소스: 성남시청
 링크: https://www.seongnam.go.kr/apply/event.do
 '''
+
+
 def deep_scrape_seongnam_event_page(link):
     event_data = ""
-    
+
     try:
         result = subprocess.run(
             ["curl", "-d", "", link],
@@ -25,7 +27,7 @@ def deep_scrape_seongnam_event_page(link):
             print("페이지를 찾을 수 없습니다.")
             return []
 
-        event_data = str(event_list)
+        event_data = event_list.get_text(separator="\n", strip=True)
 
     except subprocess.CalledProcessError as e:
         print(f"{link} 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
@@ -35,6 +37,7 @@ def deep_scrape_seongnam_event_page(link):
         print(f"{link} 페이지에서 오류가 발생했습니다: {e}")
 
     return event_data
+
 
 def scrape_seongnam_events_page(page_number):
     url = "https://www.seongnam.go.kr/apply/event.do"
@@ -127,7 +130,7 @@ def deep_scrape_snyouth_event_page(link):
             print("페이지를 찾을 수 없습니다.")
             return []
 
-        event_data = str(event_list)
+        event_data = event_list.get_text(separator="\n", strip=True)
 
     except subprocess.CalledProcessError as e:
         print(f"{link} 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
@@ -137,6 +140,7 @@ def deep_scrape_snyouth_event_page(link):
         print(f"{link} 페이지에서 오류가 발생했습니다: {e}")
 
     return event_data
+
 
 def scrape_snyouth_events_page(page_number):
     url = f"https://www.snyouth.or.kr/fmcs/123?page={page_number}"
@@ -168,7 +172,7 @@ def scrape_snyouth_events_page(page_number):
 
             date_cell = event.find_all("td")[4]
             date = date_cell.get_text(strip=True).replace("등록일자", "")
-            
+
             events_on_page.append({
                 "title": title,
                 "link": absolute_link,
