@@ -3,7 +3,6 @@ import json
 from bs4 import BeautifulSoup
 
 
-
 '''
 소스: 성남시청
 링크: https://www.seongnam.go.kr/apply/event.do
