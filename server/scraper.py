@@ -107,6 +107,37 @@ def scrape_seongnam_events_page(page_number):
 소스: 성남시총서년청년재단
 링크: https://www.snyouth.or.kr/
 '''
+
+
+def deep_scrape_snyouth_event_page(link):
+    event_data = ""
+
+    try:
+        result = subprocess.run(
+            ["curl", "-d", "", link],
+            capture_output=True, check=True
+        )
+        html_content = result.stdout.decode('utf-8')
+
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        event_list = soup.find("div", class_="board-view")
+
+        if not event_list:
+            print("페이지를 찾을 수 없습니다.")
+            return []
+
+        event_data = str(event_list)
+
+    except subprocess.CalledProcessError as e:
+        print(f"{link} 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
+        print(f"표준 오류: {e.stderr}")
+
+    except Exception as e:
+        print(f"{link} 페이지에서 오류가 발생했습니다: {e}")
+
+    return event_data
+
 def scrape_snyouth_events_page(page_number):
     url = f"https://www.snyouth.or.kr/fmcs/123?page={page_number}"
     events_on_page = []
@@ -133,18 +164,19 @@ def scrape_snyouth_events_page(page_number):
 
             title = title_cell.get_text(strip=True)
             link = title_cell.find("a")["href"]
-            absolute_link = f"https://www.snyouth.or.kr{link}"
+            absolute_link = f"https://www.snyouth.or.kr/fmcs/123{link}"
 
             date_cell = event.find_all("td")[4]
             date = date_cell.get_text(strip=True).replace("등록일자", "")
-
+            
             events_on_page.append({
                 "title": title,
                 "link": absolute_link,
                 "state": "진행예정",
                 "category": "기타",
                 "date": date,
-                "source": "성남시청소년재단"
+                "source": "성남시청소년재단",
+                "deep_data": deep_scrape_snyouth_event_page(absolute_link)
             })
 
     except subprocess.CalledProcessError as e:
