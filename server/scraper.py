@@ -216,7 +216,7 @@ def main():
         page += 1
 
     page = 1
-    while True:
+    while page <= 2:
         print(f"snyouth.or.kr {page}페이지를 스크래핑하는 중...")
 
         events = scrape_snyouth_events_page(page)
