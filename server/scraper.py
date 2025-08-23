@@ -1,7 +1,8 @@
 import subprocess
 import json
 from bs4 import BeautifulSoup
-
+import time
+from datetime import date, timedelta
 
 '''
 소스: 성남시청
@@ -76,7 +77,7 @@ def scrape_seongnam_events_page(page_number):
             state = text_span.find("span", class_="state").get_text(strip=True)
             category = text_span.find(
                 "span", class_="category").get_text(strip=True)
-            date = text_span.find("span", class_="date").get_text(
+            date_str = text_span.find("span", class_="date").get_text(
                 strip=True).replace("\r\n", "").replace("\t", "").strip()
 
             image_span = event.find("span", class_="img")
@@ -89,9 +90,9 @@ def scrape_seongnam_events_page(page_number):
                     "link": absolute_link,
                     "state": state,
                     "category": category.split("·")[0].strip(),
-                    "audience": category.split("·")[1].strip(),
+                    "audience": category.split("·")[1].strip() if len(category.split("·")) > 1 else "",
                     "image": "https://www.seongnam.go.kr" + image_src,
-                    "date": date,
+                    "date": date_str,
                     "source": "성남시청",
                     "deep_data": deep_scrape_seongnam_event_page(absolute_link)
                 })
@@ -107,7 +108,7 @@ def scrape_seongnam_events_page(page_number):
 
 
 '''
-소스: 성남시총서년청년재단
+소스: 성남시청소년재단
 링크: https://www.snyouth.or.kr/
 '''
 
@@ -171,14 +172,14 @@ def scrape_snyouth_events_page(page_number):
             absolute_link = f"https://www.snyouth.or.kr/fmcs/123{link}"
 
             date_cell = event.find_all("td")[4]
-            date = date_cell.get_text(strip=True).replace("등록일자", "")
+            date_str = date_cell.get_text(strip=True).replace("등록일자", "")
 
             events_on_page.append({
                 "title": title,
                 "link": absolute_link,
                 "state": "진행예정",
                 "category": "기타",
-                "date": date,
+                "date": date_str,
                 "source": "성남시청소년재단",
                 "deep_data": deep_scrape_snyouth_event_page(absolute_link)
             })
@@ -192,43 +193,111 @@ def scrape_snyouth_events_page(page_number):
 
     return events_on_page
 
+'''
+소스: 성남아트센터
+링크: https://www.snart.or.kr/
+'''
+def scrape_snart_events():
+    base_url = "https://www.snart.or.kr"
+    events_on_site = []
+    today = date.today()
+
+    print("성남아트센터 스크레이핑 중...")
+    for i in range(365):
+        current_date = today + timedelta(days=i)
+        date_str = current_date.strftime("%Y%m%d")
+        
+        for type_id in [1, 2]: # 1: 공연, 2: 전시
+            try:
+                api_url = f"{base_url}/web/simpleShowsMainReNew?date={date_str}&type={type_id}"
+                result = subprocess.run(["curl", api_url], capture_output=True, check=True)
+                json_string = result.stdout.decode('utf-8')
+                
+                html_content = json.loads(json_string)
+
+                soup = BeautifulSoup(html_content, "html.parser")
+                events = soup.find_all("li", class_="list")
+
+                for event in events:
+                    if "empty" in event.get("class", []):
+                        continue
+
+                    title_tag = event.find("h3", class_="title")
+                    date_tag = event.find("div", class_="date")
+                    place_tag = event.find("div", class_="place")
+                    img_tag = event.find("img")
+                    link_tag = event.find("a", class_="read_more")
+
+                    title = title_tag.get_text(strip=True) if title_tag else "제목 없음"
+                    event_date = date_tag.get_text(strip=True) if date_tag else "날짜 정보 없음"
+                    place = place_tag.get_text(strip=True) if place_tag else "장소 정보 없음"
+                    
+                    image_src = img_tag['src'] if img_tag else ""
+                    absolute_image = f"{base_url}{image_src}" if image_src.startswith('/') else image_src
+                    
+                    link_src = link_tag['href'] if link_tag else ""
+                    absolute_link = f"{base_url}{link_src}" if link_src.startswith('/') else link_src
+
+                    is_duplicate = False
+                    for existing_event in events_on_site:
+                        if existing_event["title"] == title and existing_event["date"] == event_date:
+                            is_duplicate = True
+                            break
+                    
+                    if not is_duplicate:
+                        events_on_site.append({
+                            "title": title,
+                            "link": absolute_link,
+                            "state": "진행예정",
+                            "category": "공연" if type_id == 1 else "전시",
+                            "date": event_date,
+                            "place": place,
+                            "image": absolute_image,
+                            "source": "성남아트센터"
+                        })
+                time.sleep(0.1) # 서버 부하 방지
+            except subprocess.CalledProcessError as e:
+                print(f"{date_str} ({type_id}) 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
+                print(f"표준 오류: {e.stderr}")
+            except Exception as e:
+                print(f"{date_str} ({type_id}) 페이지에서 오류가 발생했습니다: {e}")
+    
+    print(f"성남아트센터에서 {len(events_on_site)}개의 이벤트를 찾았습니다.")
+    return events_on_site
 
 def main():
     all_events = []
 
+    # --- 성남시청 스크레이퍼 ---
     page = 1
     while True:
         print(f"seongnam.go.kr {page}페이지를 스크래핑하는 중...")
-
         events = scrape_seongnam_events_page(page)
-
         if not events:
             print(f"seongnam.go.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
             break
-
         all_events.extend(events)
         print(f"{page}페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
-
         if not any(event['state'] in ['진행중', '진행예정'] for event in events):
             print(f"{page}페이지에서 '진행중' 또는 '진행예정'인 이벤트를 더 이상 찾을 수 없습니다. 중지합니다.")
             break
-
         page += 1
 
+    # --- 성남시청소년재단 스크레이퍼 ---
     page = 1
-    while page <= 2:
+    while page <= 5: # 최대 5페이지까지만 스크래핑 (무한 루프 방지)
         print(f"snyouth.or.kr {page}페이지를 스크래핑하는 중...")
-
         events = scrape_snyouth_events_page(page)
-
         if not events:
             print(f"snyouth.or.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
             break
-
         all_events.extend(events)
         print(f"{page}페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
-
         page += 1
+        
+    # --- 성남아트센터 스크레이퍼 ---
+    snart_events = scrape_snart_events()
+    all_events.extend(snart_events)
 
     with open("events.json", "w", encoding="utf-8") as f:
         json.dump(all_events, f, ensure_ascii=False, indent=4)
