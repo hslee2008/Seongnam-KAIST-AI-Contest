@@ -1,6 +1,6 @@
 import re
 
-__all__ = ["extract_http_url_from_js"]  # 함수 공개하기
+__all__ = ["extract_http_url_from_js"]
 
 
 def extract_http_url_from_js(s: str) -> str:
