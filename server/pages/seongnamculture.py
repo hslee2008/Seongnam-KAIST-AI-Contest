@@ -88,7 +88,7 @@ def scrape_seongnamculture_events_page(max_pages=5):
                 absolute_link = urljoin(base_url, relative_link)
 
                 cells = notice.find_all("td")
-                date_str = cells[-1].get_text(
+                date_str = cells[-2].get_text(
                     strip=True) if len(cells) >= 2 else ""
 
                 deep_text = deep_scrape_seongnamculture_event_page(
