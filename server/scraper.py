@@ -1,10 +1,10 @@
 import subprocess
 import json
-from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 import time
 from datetime import date, timedelta
 import re
-from urllib.parse import urljoin
+from bs4 import BeautifulSoup
 
 def _extract_http_url_from_js(s: str) -> str:
     """
@@ -20,10 +20,9 @@ def _extract_http_url_from_js(s: str) -> str:
     except Exception:
         return ""
 
-'''
-소스: 성남시청
-링크: https://www.seongnam.go.kr/apply/event.do
-'''
+
+# 소스: 성남시청
+# 링크: https://www.seongnam.go.kr/apply/event.do
 
 def deep_scrape_seongnam_event_page(link):
     event_data = ""
@@ -115,10 +114,9 @@ def scrape_seongnam_events_page(page_number):
 
     return events_on_page
 
-'''
-소스: 성남시청소년재단
-링크: https://www.snyouth.or.kr/
-'''
+# 소스: 성남시청소년재단
+# 링크: https://www.snyouth.or.kr/
+
 
 def deep_scrape_snyouth_event_page(link):
     event_data = ""
@@ -202,10 +200,8 @@ def scrape_snyouth_events_page(page_number):
 
     return events_on_page
 
-'''
-소스: 성남아트센터
-링크: https://www.snart.or.kr/
-'''
+# 소스: 성남아트센터
+# 링크: https://www.snart.or.kr/
 
 def scrape_snart_events():
     base_url = "https://www.snart.or.kr"
@@ -279,10 +275,8 @@ def scrape_snart_events():
     print(f"성남아트센터에서 {len(events_on_site)}개의 이벤트를 찾았습니다.")
     return events_on_site
 
-'''
-소스: 맹산환경생태학습원
-링크: https://mpark.seongnam.go.kr:10003
-'''
+# 소스: 맹산환경생태학습원
+# 링크: https://mpark.seongnam.go.kr:10003
 
 def deep_scrape_mpark_event_page(link):
     event_data = ""
@@ -374,10 +368,9 @@ def scrape_mpark_events():
     print(f"맹산환경생태학습원에서 총 {len(events_on_site)}개의 이벤트를 찾았습니다.")
     return events_on_site
 
-'''
-소스: 판교환경생태학습원
-링크: https://ppark.seongnam.go.kr:10013
-'''
+
+# 소스: 판교환경생태학습원
+# 링크: https://ppark.seongnam.go.kr:10013
 
 def deep_scrape_ppark_event_page(b_idx):
     event_data = ""
@@ -469,10 +462,8 @@ def scrape_ppark_events():
     print(f"판교환경생태학습원에서 총 {len(events_on_site)}개의 이벤트를 찾았습니다.")
     return events_on_site
 
-'''
-소스: 한국잡월드
-링크: https://www.koreajobworld.or.kr/
-'''
+# 소스: 한국잡월드
+# 링크: https://www.koreajobworld.or.kr/
 
 def deep_scrape_koreajobworld_page(link):
     event_data = ""
@@ -711,10 +702,8 @@ def scrape_koreajobworld_events(max_news_pages=5):
     print(f"한국잡월드 총 {len(sources)}건 수집 완료.")
     return sources
 
-'''
-소스: 성남문화원
-링크: https://www.seongnamculture.or.kr/
-'''
+# 소스: 성남문화원
+# 링크: https://www.seongnamculture.or.kr/
 
 def deep_scrape_seongnamculture_event_page(link):
     event_data = ""
