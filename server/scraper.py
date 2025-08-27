@@ -8,7 +8,7 @@ from urllib.parse import urljoin
 
 def _extract_http_url_from_js(s: str) -> str:
     """
-    javascript:fnEventView('https://...');  또는  onclick="fnEventView('https://...')"
+    javascript:fnEventView('https://...'); 또는 onclick="fnEventView('https://...')"
     같은 문자열에서 따옴표 안의 http(s) URL만 깔끔히 추출.
     없으면 빈 문자열 반환.
     """
@@ -20,17 +20,13 @@ def _extract_http_url_from_js(s: str) -> str:
     except Exception:
         return ""
 
-
-
 '''
 소스: 성남시청
 링크: https://www.seongnam.go.kr/apply/event.do
 '''
 
-
 def deep_scrape_seongnam_event_page(link):
     event_data = ""
-
     try:
         result = subprocess.run(
             ["curl", "-d", "", link],
@@ -39,7 +35,6 @@ def deep_scrape_seongnam_event_page(link):
         html_content = result.stdout.decode('utf-8')
 
         soup = BeautifulSoup(html_content, "html.parser")
-
         event_list = soup.find("div", class_="sub")
 
         if not event_list:
@@ -51,12 +46,10 @@ def deep_scrape_seongnam_event_page(link):
     except subprocess.CalledProcessError as e:
         print(f"{link} 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
         print(f"표준 오류: {e.stderr}")
-
     except Exception as e:
         print(f"{link} 페이지에서 오류가 발생했습니다: {e}")
 
     return event_data
-
 
 def scrape_seongnam_events_page(page_number):
     url = "https://www.seongnam.go.kr/apply/event.do"
@@ -70,7 +63,6 @@ def scrape_seongnam_events_page(page_number):
         html_content = result.stdout.decode('utf-8')
 
         soup = BeautifulSoup(html_content, "html.parser")
-
         event_list = soup.find("div", class_="event_img_list")
 
         if not event_list:
@@ -118,12 +110,10 @@ def scrape_seongnam_events_page(page_number):
     except subprocess.CalledProcessError as e:
         print(f"{page_number}페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
         print(f"표준 오류: {e.stderr}")
-
     except Exception as e:
         print(f"{page_number}페이지에서 오류가 발생했습니다: {e}")
 
     return events_on_page
-
 
 '''
 소스: 성남시청소년재단
@@ -479,6 +469,10 @@ def scrape_ppark_events():
     print(f"판교환경생태학습원에서 총 {len(events_on_site)}개의 이벤트를 찾았습니다.")
     return events_on_site
 
+'''
+소스: 한국잡월드
+링크: https://www.koreajobworld.or.kr/
+'''
 
 def deep_scrape_koreajobworld_page(link):
     event_data = ""
@@ -490,8 +484,6 @@ def deep_scrape_koreajobworld_page(link):
             html_content = result.stdout.decode('euc-kr', errors='ignore')
 
         soup = BeautifulSoup(html_content, "html.parser")
-
-        # 상세 본문 컨테이너 후보들(게시판/카드 상세 전반 커버)
         candidates = [
             ("div", "board-view"), ("div", "view_con"), ("div", "bbs_view"),
             ("div", "contents"), ("div", "content"), ("article", None),
@@ -520,19 +512,8 @@ def deep_scrape_koreajobworld_page(link):
 
     return event_data
 
-
 def scrape_koreajobworld_events(max_news_pages=5):
-    """
-    한국잡월드 수집(함수 1개로 통합):
-      - 새소식&공지(게시판 페이지네이션)
-      - 기획공연·교육문화(카드/목록)
-      - 이벤트·공모전(카드/목록)
-    반환: 기존 all_events와 동일한 딕셔너리 리스트
-    """
-
     sources = []
-
-    # 1) 새소식&공지 (게시판)
     news_base = "https://www.koreajobworld.or.kr/boardList.do?mid=42&menuId=55&bid=1&site=10&portalMenuNo=39"
     print("한국잡월드(새소식&공지) 크롤링 시작...")
     for page in range(1, max_news_pages + 1):
@@ -562,18 +543,9 @@ def scrape_koreajobworld_events(max_news_pages=5):
 
                     raw_href = a.get("href", "") if a else ""
                     raw_onclick = a.get("onclick", "") if a else ""
-
-                    # 자바스크립트 링크에서 http(s)만 추출
                     js_url = _extract_http_url_from_js(raw_href) or _extract_http_url_from_js(raw_onclick)
-                    if js_url:
-                        link = js_url
-                    else:
-                        if raw_href and raw_href.lower().startswith("javascript:"):
-                            link = list_url  # 실행형이면 목록으로 대체
-                        else:
-                            link = urljoin(list_url, raw_href) if raw_href else list_url
+                    link = js_url if js_url else urljoin(list_url, raw_href) if raw_href and not raw_href.lower().startswith("javascript:") else list_url
 
-                    # 날짜(등록일) 후보
                     date_text = ""
                     for td in reversed(tds):
                         txt = td.get_text(" ", strip=True)
@@ -585,7 +557,7 @@ def scrape_koreajobworld_events(max_news_pages=5):
                     sources.append({
                         "title": title or "제목 없음",
                         "link": link,
-                        "state": "진행예정",              # 공지 성격이라 상태는 의미 약함. 기본값 유지.
+                        "state": "진행예정",
                         "category": "새소식&공지",
                         "audience": "",
                         "image": "",
@@ -595,7 +567,6 @@ def scrape_koreajobworld_events(max_news_pages=5):
                     })
                     found += 1
 
-            # 테이블 실패 시 a태그 백업(과다수집 방지 조건 포함)
             if found == 0:
                 anchors = soup.find_all("a", href=True)
                 for a in anchors:
@@ -609,14 +580,7 @@ def scrape_koreajobworld_events(max_news_pages=5):
                     raw_href = a.get("href", "") or ""
                     raw_onclick = a.get("onclick", "") or ""
                     js_url = _extract_http_url_from_js(raw_href) or _extract_http_url_from_js(raw_onclick)
-
-                    if js_url:
-                        link = js_url
-                    else:
-                        if raw_href.lower().startswith("javascript:"):
-                            link = list_url
-                        else:
-                            link = urljoin(list_url, raw_href) if raw_href else list_url
+                    link = js_url if js_url else urljoin(list_url, raw_href) if raw_href and not raw_href.lower().startswith("javascript:") else list_url
 
                     deep_text = deep_scrape_koreajobworld_page(link)
                     if not any(k in (t + " " + deep_text) for k in ["공지", "안내", "모집", "이벤트", "프로그램", "행사"]):
@@ -644,7 +608,6 @@ def scrape_koreajobworld_events(max_news_pages=5):
         except Exception as e:
             print(f"한국잡월드(새소식&공지) 목록 처리 오류 p{page}: {e}")
 
-    # 2) 기획공연·교육문화 + 3) 이벤트·공모전 (카드/목록 공용 파서)
     card_targets = [
         ("https://www.koreajobworld.or.kr/event/showList.do?site=10&searchEvent=01&portalMenuNo=239", "기획공연·교육문화"),
         ("https://www.koreajobworld.or.kr/event/showList.do?site=10&searchEvent=04&portalMenuNo=247", "이벤트·공모전"),
@@ -669,7 +632,6 @@ def scrape_koreajobworld_events(max_news_pages=5):
                 if not any(k in block for k in ["일자", "장소"]):
                     continue
 
-                # 제목
                 title = "제목 없음"
                 for sel in ["h3", "h4", "dt", "strong", "p", ".title", ".name"]:
                     node = c.select_one(sel) if sel.startswith(".") else c.find(sel)
@@ -681,7 +643,6 @@ def scrape_koreajobworld_events(max_news_pages=5):
                 if title == "제목 없음" and block:
                     title = block.split("\n", 1)[0][:200]
 
-                # 날짜/장소
                 def pick(pattern):
                     m = re.search(pattern, block)
                     return m.group(1).strip() if m else ""
@@ -690,7 +651,6 @@ def scrape_koreajobworld_events(max_news_pages=5):
                            or (re.search(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})", block).group(1) if re.search(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})", block) else "")
                 place = pick(r"장소\s*:\s*([^\n]+)")
 
-                # 상세 링크 (href/onclick/JS 실행형 모두 처리)
                 detail_link = ""
                 a = None
                 for txt in ["상세", "자세히", "더보기", "상세내용", "detail", "more"]:
@@ -704,18 +664,11 @@ def scrape_koreajobworld_events(max_news_pages=5):
                     raw_href = a.get("href", "") or ""
                     raw_onclick = a.get("onclick", "") or ""
                     js_url = _extract_http_url_from_js(raw_href) or _extract_http_url_from_js(raw_onclick)
-                    if js_url:
-                        detail_link = js_url
-                    else:
-                        if raw_href.lower().startswith("javascript:"):
-                            detail_link = ""
-                        else:
-                            detail_link = urljoin(url, raw_href) if raw_href else ""
+                    detail_link = js_url if js_url else urljoin(url, raw_href) if raw_href and not raw_href.lower().startswith("javascript:") else ""
 
                 if not detail_link:
-                    detail_link = url  # 파이프라인 유지를 위해 목록 URL로 대체
+                    detail_link = url
 
-                # 이미지
                 img = ""
                 img_tag = c.find("img")
                 if img_tag and img_tag.get("src"):
@@ -758,11 +711,128 @@ def scrape_koreajobworld_events(max_news_pages=5):
     print(f"한국잡월드 총 {len(sources)}건 수집 완료.")
     return sources
 
+'''
+소스: 성남문화원
+링크: https://www.seongnamculture.or.kr/
+'''
+
+def deep_scrape_seongnamculture_event_page(link):
+    event_data = ""
+    try:
+        result = subprocess.run(["curl", link], capture_output=True, check=True, timeout=30)
+        try:
+            html_content = result.stdout.decode('utf-8')
+        except UnicodeDecodeError:
+            html_content = result.stdout.decode('euc-kr', errors='ignore')
+
+        soup = BeautifulSoup(html_content, "html.parser")
+        candidates = [
+            ("div", "board_view"), ("div", "view_con"), ("div", "bbs_view"),
+            ("div", "contents"), ("div", "content"), ("article", None),
+            ("section", None), ("div", "sub")
+        ]
+        for name, cls in candidates:
+            node = soup.find(name, class_=cls) if cls else soup.find(name)
+            if node:
+                event_data = node.get_text(separator="\n", strip=True)
+                if event_data:
+                    break
+
+        if not event_data:
+            for t in soup(["script", "style", "noscript"]):
+                t.extract()
+            event_data = soup.get_text(separator="\n", strip=True)[:7000]
+
+    except subprocess.CalledProcessError as e:
+        print(f"{link} 상세 페이지 curl 오류: {e}")
+        print(f"표준 오류: {e.stderr.decode('utf-8', errors='ignore')}")
+    except Exception as e:
+        print(f"{link} 상세 페이지 처리 오류: {e}")
+
+    return event_data
+
+def scrape_seongnamculture_events(max_pages=5):
+    base_url = "https://www.seongnamculture.or.kr"
+    events_on_site = []
+    page = 1
+    print("성남문화원 스크레이핑 중...")
+    while page <= max_pages:
+        list_url = f"{base_url}/sub/community_01.html?Table=ins_bbs1&page={page}"
+        try:
+            result = subprocess.run(["curl", list_url], capture_output=True, check=True, timeout=30)
+            try:
+                html_content = result.stdout.decode('utf-8')
+            except UnicodeDecodeError:
+                html_content = result.stdout.decode('euc-kr', errors='ignore')
+
+            soup = BeautifulSoup(html_content, "html.parser")
+            notice_list = soup.select('table[cellspacing="1"] tr[bgcolor="#FFFFFF"]')
+
+            if not notice_list or len(notice_list) <= 1:
+                print(f"{page}페이지에서 공지사항 목록을 찾을 수 없습니다.")
+                break
+
+            found_count = 0
+            for notice in notice_list:
+                if not notice.find_all('td'):
+                    continue
+                
+                cells = notice.find_all('td')
+                if len(cells) < 6:
+                    continue
+                title_cell = cells[2]
+                
+                title = title_cell.get_text(strip=True)
+                link_tag = title_cell.find('a')
+                relative_link = link_tag['href'] if link_tag else None
+
+                if not relative_link:
+                    continue
+
+                absolute_link = urljoin(base_url, relative_link)
+                
+                cells = notice.find_all("td")
+                date_str = cells[-1].get_text(strip=True) if len(cells) >= 2 else ""
+                
+                deep_text = deep_scrape_seongnamculture_event_page(absolute_link)
+                state = "진행예정"
+                if "마감" in (title + " " + deep_text):
+                    state = "마감"
+
+                events_on_site.append({
+                    "title": title,
+                    "link": absolute_link,
+                    "state": state,
+                    "category": "문화",
+                    "audience": "",
+                    "image": "",
+                    "date": date_str,
+                    "source": "성남문화원",
+                    "deep_data": deep_text
+                })
+                found_count += 1
+            
+            print(f"{page}페이지에서 {found_count}개의 이벤트를 찾았습니다.")
+            if found_count == 0:
+                break
+            page += 1
+            time.sleep(0.1)
+
+        except subprocess.CalledProcessError as e:
+            print(f"{list_url} 페이지에서 curl을 실행하는 중 오류가 발생했습니다: {e}")
+            print(f"표준 오류: {e.stderr.decode('utf-8', errors='ignore')}")
+            break
+        except Exception as e:
+            print(f"{list_url} 페이지에서 오류가 발생했습니다: {e}")
+            break
+            
+    print(f"성남문화원에서 총 {len(events_on_site)}개의 이벤트를 찾았습니다.")
+    return events_on_site
 
 def main():
     all_events = []
 
-    # --- 성남시청 스크레이퍼 ---
+    #--- 성남시청 스크레이퍼 ---
     page = 1
     while True:
         print(f"seongnam.go.kr {page}페이지를 스크래핑하는 중...")
@@ -798,10 +868,12 @@ def main():
     # --- 판교환경생태학습원 스크레이퍼 ---
     ppark_events = scrape_ppark_events()
     all_events.extend(ppark_events)
-
     # --- 한국잡월드 스크레이퍼 ---
     koreajobworld_events = scrape_koreajobworld_events()
     all_events.extend(koreajobworld_events)
+    #ㄷ--- 성남문화원 스크레이퍼 ---
+    seongnamculture_events = scrape_seongnamculture_events()
+    all_events.extend(seongnamculture_events)
 
     with open("events.json", "w", encoding="utf-8") as f:
         json.dump(all_events, f, ensure_ascii=False, indent=4)
