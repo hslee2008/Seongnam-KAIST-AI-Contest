@@ -85,7 +85,7 @@ def scrape_seongnam_events_page(page_number):
             app_idx_parts = onclick_attr.split("goView('")
 
             if len(app_idx_parts) > 1:
-                app_idx = app_idx_parts[1].split("')")[0]
+                app_idx = app_idx_parts[1].split("'")[0]
                 app_idx = ''.join(filter(str.isdigit, app_idx.split(',')[0]))
                 absolute_link = f"https://www.seongnam.go.kr/apply/view.do?appIdx={app_idx}"
             else:
