@@ -6,20 +6,7 @@ from datetime import date, timedelta
 import re
 from bs4 import BeautifulSoup
 
-def _extract_http_url_from_js(s: str) -> str:
-    """
-    javascript:fnEventView('https://...'); 또는 onclick="fnEventView('https://...')"
-    같은 문자열에서 따옴표 안의 http(s) URL만 깔끔히 추출.
-    없으면 빈 문자열 반환.
-    """
-    if not s:
-        return ""
-    try:
-        m = re.search(r"['\"](https?://[^'\"()]+)['\"]", s)
-        return m.group(1) if m else ""
-    except Exception:
-        return ""
-
+from utils.url_parsing import extract_http_url_from_js
 
 # 소스: 성남시청
 # 링크: https://www.seongnam.go.kr/apply/event.do
@@ -534,7 +521,7 @@ def scrape_koreajobworld_events(max_news_pages=5):
 
                     raw_href = a.get("href", "") if a else ""
                     raw_onclick = a.get("onclick", "") if a else ""
-                    js_url = _extract_http_url_from_js(raw_href) or _extract_http_url_from_js(raw_onclick)
+                    js_url = extract_http_url_from_js(raw_href) or extract_http_url_from_js(raw_onclick)
                     link = js_url if js_url else urljoin(list_url, raw_href) if raw_href and not raw_href.lower().startswith("javascript:") else list_url
 
                     date_text = ""
@@ -570,7 +557,7 @@ def scrape_koreajobworld_events(max_news_pages=5):
 
                     raw_href = a.get("href", "") or ""
                     raw_onclick = a.get("onclick", "") or ""
-                    js_url = _extract_http_url_from_js(raw_href) or _extract_http_url_from_js(raw_onclick)
+                    js_url = extract_http_url_from_js(raw_href) or extract_http_url_from_js(raw_onclick)
                     link = js_url if js_url else urljoin(list_url, raw_href) if raw_href and not raw_href.lower().startswith("javascript:") else list_url
 
                     deep_text = deep_scrape_koreajobworld_page(link)
@@ -654,7 +641,7 @@ def scrape_koreajobworld_events(max_news_pages=5):
                 if a:
                     raw_href = a.get("href", "") or ""
                     raw_onclick = a.get("onclick", "") or ""
-                    js_url = _extract_http_url_from_js(raw_href) or _extract_http_url_from_js(raw_onclick)
+                    js_url = extract_http_url_from_js(raw_href) or extract_http_url_from_js(raw_onclick)
                     detail_link = js_url if js_url else urljoin(url, raw_href) if raw_href and not raw_href.lower().startswith("javascript:") else ""
 
                 if not detail_link:
@@ -837,16 +824,12 @@ def main():
         page += 1
 
     # --- 성남시청소년재단 스크레이퍼 ---
-    page = 1
-    while page <= 5:
-        print(f"snyouth.or.kr {page}페이지를 스크래핑하는 중...")
-        events = scrape_snyouth_events_page(page)
-        if not events:
-            print(f"snyouth.or.kr {page}페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
-            break
-        all_events.extend(events)
-        print(f"{page}페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
-        page += 1
+    print("snyouth.or.kr 1페이지를 스크래핑하는 중...")
+    events = scrape_snyouth_events_page(1)
+    if not events:
+        print("snyouth.or.kr 1페이지에서 더 이상 이벤트를 찾을 수 없습니다. 중지합니다.")
+    all_events.extend(events)
+    print(f"1페이지에서 {len(events)}개의 이벤트를 찾았습니다.")
         
     # --- 맹산환경생태학습원 스크레이퍼 ---
     mpark_events = scrape_mpark_events()
