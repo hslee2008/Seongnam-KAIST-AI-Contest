@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 # 링크: https://www.seongnam.go.kr/apply/event.do
 
 
-__all__ = ["scrape_seongnam_events_page"]  # 함수 공개하기
+__all__ = ["scrape_seongnam_events_page"]
 
 
 def deep_scrape_seongnam_event_page(link):

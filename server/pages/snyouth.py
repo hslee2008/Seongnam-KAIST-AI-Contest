@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 # 소스: 성남시청소년재단
 # 링크: https://www.snyouth.or.kr/
 
-__all__ = ["scrape_snyouth_events_page"] # 함수 공개하기
+__all__ = ["scrape_snyouth_events_page"]
 
 
 def deep_scrape_snyouth_event_page(link):
