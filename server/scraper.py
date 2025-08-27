@@ -9,7 +9,7 @@ from pages.koreajobworld import scrape_koreajobworld_events_page
 from pages.seongnamculture import scrape_seongnamculture_events_page
 from pages.pangyomeseum import scrape_pangyomuseum_events_page
 from pages.pangyowelfare import scrape_pangyowelfare_events_page
-
+from pages.pangyonoin import scrape_pangyonoin_events_page
 
 def main():
     all_events = []

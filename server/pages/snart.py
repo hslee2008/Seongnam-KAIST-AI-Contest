@@ -15,7 +15,7 @@ def scrape_snart_events_page():
     today = date.today()
 
     print("성남아트센터 스크레이핑 중...")
-    for i in range(365):
+    for i in range(30):
         current_date = today + timedelta(days=i)
         date_str = current_date.strftime("%Y%m%d")
 
