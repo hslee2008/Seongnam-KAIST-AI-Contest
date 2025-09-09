@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const userInput = document.getElementById("user-input");
     const sendBtn = document.getElementById("send-btn");
     const chatWindow = document.getElementById("chat-window");
+    const loadingDiv = document.getElementById("loading");
 
     sendBtn.addEventListener("click", sendMessage);
     userInput.addEventListener("keypress", (e) => {
@@ -16,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         appendMessage(message, "user-message");
         userInput.value = "";
+        loadingDiv.style.display = "block";
+        chatWindow.scrollTop = chatWindow.scrollHeight;
 
         try {
             const response = await fetch("/chat", {
@@ -26,16 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ message: message }),
             });
 
+            loadingDiv.style.display = "none";
+
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error(`Network response was not ok: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log("API 응답:", JSON.stringify(data, null, 2));
             appendMessage(data.response, "bot-message");
 
         } catch (error) {
             console.error("Error:", error);
-            appendMessage("오류가 발생했습니다.", "bot-message");
+            loadingDiv.style.display = "none";
+            appendMessage("오류가 발생했습니다: " + error.message, "bot-message");
         }
     }
 
@@ -45,30 +52,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (typeof content === 'string') {
             messageDiv.textContent = content;
-        } else if (Array.isArray(content)) {
-            content.forEach(event => {
-                const eventDiv = document.createElement('div');
-                eventDiv.classList.add('event');
-                
-                const titleLink = document.createElement('a');
-                titleLink.href = event.link;
-                titleLink.textContent = event.title;
-                titleLink.target = "_blank";
+        } else if (content && content.recommended_event && Object.keys(content.recommended_event).length > 0) {
+            const event = content.recommended_event;
+            const eventDiv = document.createElement('div');
+            eventDiv.classList.add('event');
 
-                const sourceP = document.createElement('p');
-                sourceP.textContent = `출처: ${event.source}`;
+            const titleLink = document.createElement('a');
+            titleLink.href = event.link || '#';
+            titleLink.textContent = event.title || '제목 없음';
+            titleLink.target = "_blank";
 
-                const dateP = document.createElement('p');
-                dateP.textContent = `날짜: ${event.date}`;
+            const sourceP = document.createElement('p');
+            sourceP.textContent = `기관: ${event.source || '출처 없음'}`;
 
-                eventDiv.appendChild(titleLink);
-                eventDiv.appendChild(sourceP);
-                eventDiv.appendChild(dateP);
-                messageDiv.appendChild(eventDiv);
-            });
-        } 
-        
+
+            eventDiv.appendChild(titleLink);
+            eventDiv.appendChild(sourceP);
+            messageDiv.appendChild(eventDiv);
+        } else {
+            messageDiv.textContent = content.reason || "행사를 찾을 수 없습니다.";
+        }
+
         chatWindow.appendChild(messageDiv);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        requestAnimationFrame(() => {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        });
     }
 });
