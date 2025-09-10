@@ -71,12 +71,10 @@ def scrape_snart_events_page():
                             "link": absolute_link,
                             "state": "진행예정",
                             "category": "공연" if type_id == 1 else "전시",
-                            "audience": "",
                             "image": absolute_image,
                             "date": event_date,
                             "place": place,
-                            "source": "성남아트센터",
-                            "deep_data": ""
+                            "source": "성남아트센터"
                         })
                 time.sleep(0.1)
             except subprocess.CalledProcessError as e:

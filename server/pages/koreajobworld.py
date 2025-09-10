@@ -101,10 +101,7 @@ def scrape_koreajobworld_events_page(max_news_pages=5):
                     sources.append({
                         "title": title or "제목 없음",
                         "link": link,
-                        "state": "진행예정",
                         "category": "새소식&공지",
-                        "audience": "",
-                        "image": "",
                         "date": date_text,
                         "source": "한국잡월드",
                         "deep_data": deep_text

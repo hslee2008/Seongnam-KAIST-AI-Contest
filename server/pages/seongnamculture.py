@@ -102,8 +102,6 @@ def scrape_seongnamculture_events_page(max_pages=5):
                     "link": absolute_link,
                     "state": state,
                     "category": "문화",
-                    "audience": "",
-                    "image": "",
                     "date": date_str,
                     "source": "성남문화원",
                     "deep_data": deep_text

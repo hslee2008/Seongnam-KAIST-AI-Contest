@@ -1,6 +1,7 @@
 import subprocess
 import time
 from bs4 import BeautifulSoup
+from utils.date_parsing import is_within_month
 
 # 소스: 맹산환경생태학습원
 # 링크: https://mpark.seongnam.go.kr:10003
@@ -72,13 +73,14 @@ def scrape_mpark_events_page():
                 date_str = cells[3].get_text(
                     strip=True) if len(cells) > 3 else ""
                 found_count += 1
+                
+                if not is_within_month(date_str):
+                    continue
+                
                 events_on_site.append({
                     "title": title,
                     "link": absolute_link,
-                    "state": "진행예정",
                     "category": "환경",
-                    "audience": "",
-                    "image": "",
                     "date": date_str,
                     "source": "맹산환경생태학습원",
                     "deep_data": deep_scrape_mpark_event_page(absolute_link)

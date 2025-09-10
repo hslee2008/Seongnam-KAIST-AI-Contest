@@ -77,10 +77,7 @@ def scrape_ppark_events_page():
                 events_on_site.append({
                     "title": title,
                     "link": absolute_link,
-                    "state": "진행예정",
                     "category": "환경",
-                    "audience": "",
-                    "image": "",
                     "date": date_str,
                     "source": "판교환경생태학습원",
                     "deep_data": deep_scrape_ppark_event_page(b_idx)
