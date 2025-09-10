@@ -98,7 +98,6 @@ def scrape_pangyomuseum_events_page(max_pages=5):
                     "link": absolute_link,
                     "state": state,
                     "category": "박물관",
-                    "audience": "",
                     "image": image_src,
                     "date": date_str,
                     "source": "판교박물관",

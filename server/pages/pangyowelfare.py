@@ -99,8 +99,6 @@ def scrape_pangyowelfare_events_page(max_pages=5):
                     "link": absolute_link,
                     "state": state,
                     "category": "복지",
-                    "audience": "",
-                    "image": "",
                     "date": date_str,
                     "source": "판교종합사회복지관",
                     "deep_data": deep_text
