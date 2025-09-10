@@ -1,5 +1,6 @@
 import subprocess
 from bs4 import BeautifulSoup
+from server.utils.date_parsing import is_within_month
 
 # 소스: 성남시청소년재단
 # 링크: https://www.snyouth.or.kr/
@@ -73,15 +74,20 @@ def scrape_snyouth_events_page(page_number):
             date_str = date_cell.get_text(strip=True).replace(
                 "등록일자", "") if date_cell else ""
 
+            if not is_within_month(date_str):
+                continue
+
+            file_cell = event.find_all("td")[3]
+            file_links_abs = file_cell.find_all("a") if file_cell else []
+            file_links = [
+                f"https://www.snyouth.or.kr{a['href']}" for a in file_links_abs if 'href' in a.attrs]
+
             events_on_page.append({
                 "title": title,
                 "link": absolute_link,
-                "state": "진행예정",
-                "category": "기타",
-                "audience": "",
-                "image": "",
                 "date": date_str,
                 "source": "성남시청소년재단",
+                "files": file_links,
                 "deep_data": deep_scrape_snyouth_event_page(absolute_link)
             })
 
