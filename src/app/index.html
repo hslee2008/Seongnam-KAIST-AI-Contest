@@ -1,153 +1,474 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SEAIF – Chat Only</title>
+  <title>SEAIF – 성남시행사 AI 파인더</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{
-      --primary:#4A69E2;
-      --background:#F7F8FC;
-      --border-color:#EEEEEE;
-      --text-placeholder:#9E9E9E;
-    }
-    @supports(padding:max(0px)){
-      .pt-safe{padding-top:env(safe-area-inset-top)}
-      .pb-safe{padding-bottom:env(safe-area-inset-bottom)}
-    }
-    body{
-      font-family:'Pretendard',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-      background:var(--background);
-    }
-    .shadow-strong{ box-shadow:0 8px 24px rgba(74,105,226,.2); }
 
-    /* 채팅 말풍선 */
-    .bubble-enter{
-      transform:translateY(8px) scale(.98);
-      opacity:.0;
+  <!-- Material 3 Expressive-friendly fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght,GRAD,slnt,YOPQ@8..144,300..900,-200..150,-12..0,25..135&family=Noto+Sans+KR:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --seed-primary:  #6366F1;
+      --seed-secondary:#06B6D4;
+      --seed-tertiary: #10B981;
+
+      --md-sys-color-primary: var(--seed-primary);
+      --md-sys-color-on-primary: #FFFFFF;
+      --md-sys-color-primary-container: #E0E7FF;
+      --md-sys-color-on-primary-container: #1E1B4B;
+
+      --md-sys-color-secondary: #64748B;
+      --md-sys-color-on-secondary: #FFFFFF;
+      --md-sys-color-secondary-container: #E2F6FA;
+      --md-sys-color-on-secondary-container: #07242B;
+
+      --md-sys-color-tertiary:  var(--seed-tertiary);
+      --md-sys-color-on-tertiary:#FFFFFF;
+      --md-sys-color-tertiary-container:#D1FAE5;
+      --md-sys-color-on-tertiary-container:#064E3B;
+
+      --md-sys-color-error:#DC2626;
+      --md-sys-color-on-error:#FFFFFF;
+      --md-sys-color-error-container:#FEE2E2;
+      --md-sys-color-on-error-container:#7F1D1D;
+
+      --md-sys-color-surface: #FAFBFC;
+      --md-sys-color-on-surface: #0F172A;
+      --md-sys-color-surface-dim: #EFF2F6;
+      --md-sys-color-surface-bright: #FFFFFF;
+      --md-sys-color-surface-container-lowest: #FFFFFF;
+      --md-sys-color-surface-container-low: #F8FAFC;
+      --md-sys-color-surface-container: #F1F5F9;
+      --md-sys-color-surface-container-high: #E2E8F0;
+      --md-sys-color-surface-container-highest: #CBD5E1;
+
+      --md-sys-color-outline: #CBD5E1;
+      --md-sys-color-outline-variant: #E2E8F0;
+
+      --shape-corner-xs: 4px;
+      --shape-corner-sm: 8px;
+      --shape-corner-md: 12px;
+      --shape-corner-lg: 16px;
+      --shape-corner-xl: 28px;
+      --shape-corner-2xl: 48px;
+      --shape-corner-full: 9999px;
+
+      --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+      --easing-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+      --easing-expressive: cubic-bezier(0.25, 0.8, 0.2, 1);
+      --dur-quick: 140ms;
+      --dur-standard: 220ms;
+      --dur-long: 360ms;
+
+      --elevation-1: 0 1px 2px rgba(0,0,0,0.06);
+      --elevation-2: 0 4px 8px rgba(0,0,0,0.08);
+      --elevation-3: 0 8px 16px rgba(0,0,0,0.10);
+      --elevation-4: 0 16px 24px rgba(0,0,0,0.12);
+      --elevation-5: 0 24px 40px rgba(0,0,0,0.16);
+
+      --gradient-primary: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
+      --gradient-surface: linear-gradient(180deg, var(--md-sys-color-surface) 0%, var(--md-sys-color-surface-container-low) 100%);
     }
-    .bubble-enter-active{
-      transform:translateY(0) scale(1);
-      opacity:1;
-      transition:transform .22s cubic-bezier(.2,.7,.2,1), opacity .22s ease;
+
+    [data-theme="dark"] {
+      --md-sys-color-primary: #818CF8;
+      --md-sys-color-on-primary: #1E1B4B;
+      --md-sys-color-primary-container: #312E81;
+      --md-sys-color-on-primary-container: #E0E7FF;
+
+      --md-sys-color-secondary: #94A3B8;
+      --md-sys-color-on-secondary: #0B1220;
+      --md-sys-color-secondary-container: #101826;
+      --md-sys-color-on-secondary-container: #E5EEF7;
+
+      --md-sys-color-tertiary: #34D399;
+      --md-sys-color-on-tertiary: #052016;
+      --md-sys-color-tertiary-container: #0B3B2B;
+      --md-sys-color-on-tertiary-container: #D1FAE5;
+
+      --md-sys-color-surface: #0F172A;
+      --md-sys-color-on-surface: #F1F5F9;
+      --md-sys-color-surface-dim: #0B1426;
+      --md-sys-color-surface-bright: #162036;
+      --md-sys-color-surface-container-lowest: #0A1222;
+      --md-sys-color-surface-container-low: #0E1729;
+      --md-sys-color-surface-container: #1C2540;
+      --md-sys-color-surface-container-high: #293351;
+      --md-sys-color-surface-container-highest: #364166;
+
+      --md-sys-color-outline: #334155;
+      --md-sys-color-outline-variant: #1E293B;
+
+      --gradient-surface: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
     }
+
+    html, body { height: 100%; }
+    body {
+      font-family: 'Roboto Flex', 'Noto Sans KR', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: var(--gradient-surface);
+      color: var(--md-sys-color-on-surface);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .app { width: min(430px, 100vw); min-height: 100dvh; margin: 0 auto; position: relative; }
+
+    .app-bar { position: sticky; top: 0; z-index: 30; background: var(--md-sys-color-surface); backdrop-filter: saturate(1.3) blur(10px); border-bottom: 1px solid var(--md-sys-color-outline-variant); transition: padding var(--dur-standard) var(--easing-emphasized), box-shadow var(--dur-standard) var(--easing-standard); padding: 18px 20px 12px; }
+    .app-bar.compact { padding: 8px 16px; box-shadow: var(--elevation-1); }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-badge { width: 36px; height: 36px; border-radius: var(--shape-corner-xl); background: var(--gradient-primary); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: var(--elevation-2); }
+    .brand-title { font-weight: 800; letter-spacing: -0.02em; }
+    .brand-title .large { font-size: 20px; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .brand-title .small { font-size: 16px; opacity: .9; display:none; }
+    .app-bar.compact .brand-title .large { display:none; }
+    .app-bar.compact .brand-title .small { display:inline-block; }
+
+    .icon-button { width: 40px; height: 40px; border-radius: var(--shape-corner-lg); display:grid; place-items:center; border:1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface-container-low); color: var(--md-sys-color-on-surface); transition: transform var(--dur-quick) var(--easing-standard), background var(--dur-quick) var(--easing-standard); }
+    .icon-button:hover { transform: translateY(-1px); background: var(--md-sys-color-surface-container); }
+    .icon-button:active { transform: scale(.97); }
+    .theme-toggle { background: var(--md-sys-color-tertiary-container); color: var(--md-sys-color-on-tertiary-container); border-color: transparent; }
+
+    .popover { position:absolute; right: 16px; top: 60px; width: 280px; padding: 12px; border-radius: var(--shape-corner-xl); background: var(--md-sys-color-surface-container); border:1px solid var(--md-sys-color-outline-variant); box-shadow: var(--elevation-4); transform-origin: top right; opacity:0; transform: scale(.96); pointer-events:none; transition: opacity var(--dur-standard) var(--easing-standard), transform var(--dur-standard) var(--easing-emphasized); }
+    .popover.open { opacity:1; transform: scale(1); pointer-events:auto; }
+    .chip { padding:8px 14px; border-radius: var(--shape-corner-full); font-size:13px; font-weight:500; cursor:pointer; border:1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface-container-low); color: var(--md-sys-color-on-surface); transition: transform var(--dur-quick) var(--easing-standard), background var(--dur-quick) var(--easing-standard), border-color var(--dur-quick) var(--easing-standard); }
+    .chip:hover{ transform: translateY(-1px); background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); border-color: var(--md-sys-color-primary); }
+
+    .chat { height: calc(100dvh - 72px); display:flex; flex-direction:column; background: var(--md-sys-color-surface); }
+    .chat-list { flex:1; padding: 14px 20px; overflow-y:auto; scroll-behavior:smooth; }
+    .chat-list::-webkit-scrollbar{ width:6px; } .chat-list::-webkit-scrollbar-thumb{ background: var(--md-sys-color-outline); border-radius:3px; }
+
+    .bubble{ max-width:82%; line-height:1.55; font-size:15px; padding:14px 16px; border-radius: var(--shape-corner-xl); position:relative; animation: slideUp var(--dur-standard) var(--easing-emphasized); }
+    .bubble.assistant{ background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); border:1px solid var(--md-sys-color-outline-variant); border-bottom-left-radius: var(--shape-corner-sm); }
+    .bubble.user{ background: var(--gradient-primary); color: var(--md-sys-color-on-primary); margin-left:auto; box-shadow: var(--elevation-2); border-bottom-right-radius: var(--shape-corner-sm); }
+    @keyframes slideUp { from { opacity:0; transform: translateY(16px) scale(.98); } to { opacity:1; transform: translateY(0) scale(1); } }
+
+    .composer { padding: 10px 12px 14px; border-top: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface); position:relative; z-index: 10; }
+    .composer-row { display:flex; gap:10px; align-items:flex-end; }
+
+    .field { flex:1; display:flex; align-items:center; background: var(--md-sys-color-surface-container); border: 2px solid var(--md-sys-color-outline-variant); border-radius: var(--shape-corner-full); transition: border-color var(--dur-quick) var(--easing-standard), box-shadow var(--dur-quick) var(--easing-standard), background var(--dur-quick) var(--easing-standard); padding: 2px 6px; position:relative; }
+    .field:focus-within{ border-color: var(--md-sys-color-primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--md-sys-color-primary) 20%, transparent); background: var(--md-sys-color-surface-container-high); }
+    .input{ flex:1; border:0; outline:0; background: transparent; color: var(--md-sys-color-on-surface); font-size: 15px; padding: 10px 10px; }
+    .input::placeholder{ color: color-mix(in oklab, var(--md-sys-color-on-surface) 55%, transparent); }
+
+    .send { height:56px; min-width:56px; border-radius: var(--shape-corner-full); border:0; cursor:pointer; color:var(--md-sys-color-on-primary); background: var(--gradient-primary); display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:0 18px; box-shadow: var(--elevation-3); transition: width var(--dur-standard) var(--easing-emphasized), padding var(--dur-standard) var(--easing-emphasized), transform var(--dur-quick) var(--easing-standard), box-shadow var(--dur-quick) var(--easing-standard); }
+    .send:hover{ box-shadow: var(--elevation-5); transform: translateY(-2px); }
+    .send:active{ transform: translateY(0) scale(.985); transition-duration: 90ms; }
+    .send[data-compact="true"]{ width:56px; padding:0; }
+    .send .label{ white-space:nowrap; overflow:hidden; max-width:0; opacity:0; transition: max-width var(--dur-standard) var(--easing-emphasized), opacity var(--dur-standard) var(--easing-standard); }
+    .send[data-compact="false"] .label{ max-width:120px; opacity:1; }
+    .send svg { display: block; }
+    .send[data-compact="true"] { gap: 0; }
+    .send .label { line-height: 1; margin: 0; }
+
+    /* ======= Reworked FAB Speed Dial (anchored to more button) ======= */
+    .fab-dial { position:absolute; right: 0; bottom: 56px; display:flex; flex-direction:column; gap:10px; transform-origin: bottom right; pointer-events:none; }
+    .fab-dial.open { pointer-events:auto; }
+    .mini-fab { position:relative; width:48px; height:48px; border-radius: var(--shape-corner-full); display:grid; place-items:center; border:1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); box-shadow: var(--elevation-3); transform: scale(.9) translateY(8px); opacity:0; transition: transform var(--dur-standard) var(--easing-emphasized), opacity var(--dur-standard) var(--easing-standard); }
+    .fab-dial.open .mini-fab { transform: scale(1) translateY(0); opacity:1; }
+    .mini-fab:nth-child(1){ transition-delay: 20ms; } .mini-fab:nth-child(2){ transition-delay: 60ms; } .mini-fab:nth-child(3){ transition-delay: 100ms; }
+    .mini-fab:focus-visible{ outline: 3px solid color-mix(in oklab, var(--md-sys-color-primary) 45%, transparent); }
+    .fab-label { position:absolute; right: 54px; top:50%; transform: translateY(-50%); padding:6px 10px; border-radius: var(--shape-corner-full); font-size:12px; background: var(--md-sys-color-surface-container-high); border:1px solid var(--md-sys-color-outline-variant); box-shadow: var(--elevation-2); opacity:0; pointer-events:none; transition: opacity var(--dur-quick) var(--easing-standard); }
+    .mini-fab:hover .fab-label { opacity:1; }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding: 0 6px; }
+
+    @keyframes blink { 0%,100%{opacity:.25} 50%{opacity:1} }
+    .dots>span{ display:inline-block; width:6px; height:6px; border-radius:999px; background: currentColor; animation: blink 1s infinite; }
+    .dots>span:nth-child(2){ animation-delay:.18s } .dots>span:nth-child(3){ animation-delay:.36s }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: 1ms !important; } }
   </style>
 </head>
 <body>
-  <div class="w-full min-h-screen flex items-start justify-center bg-gray-200">
-    <div id="screen" class="relative mx-auto w-[min(430px,100vw)] min-h-[100dvh] bg-[color:var(--background)]">
-
-      <!-- 채팅 페이지 (단일 화면) -->
-      <main id="page-chat" class="page active">
-        <header class="pt-safe sticky top-0 z-10 px-4 py-2 bg-white/80 backdrop-blur-lg border-b border-[color:var(--border-color)]">
-          <div class="flex items-center h-[56px]">
-            <div class="text-lg font-bold text-center flex-1">AI 어시스턴트</div>
+  <div class="app">
+    <header id="appBar" class="app-bar">
+      <div class="flex items-center justify-between">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" role="img"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
-        </header>
-
-        <!-- 대화 영역 -->
-        <div id="chat-list" class="px-4 pt-3 pb-28 min-h-[calc(100dvh-150px)]"></div>
-
-        <!-- 입력창 -->
-        <div class="pb-safe fixed bottom-0 left-1/2 -translate-x-1/2 w-[min(430px,100vw)] bg-white/80 backdrop-blur-lg border-t border-[color:var(--border-color)]">
-          <div class="p-3 flex items-center gap-2">
-            <button aria-label="추가 옵션" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-            </button>
-            <div class="flex-1 h-[48px] rounded-full bg-gray-100 flex items-center px-4">
-              <input id="chat-input" class="flex-1 bg-transparent outline-none text-[15px] placeholder-[color:var(--text-placeholder)]" placeholder="무엇이든 물어보세요" />
-            </div>
-            <button id="chat-send" aria-label="전송" class="w-12 h-12 bg-[color:var(--primary)] rounded-full flex items-center justify-center shadow-strong active:scale-95 transition-transform">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M3.4 20.4l17.4-8.4c.5-.2.5-.9 0-1.2L3.4 2.4c-.5-.2-1 .2-1 .7v5.5c0 .3.2.6.5.6l8.6.9c.2 0 .2.2 0 .3l-8.6.9c-.3 0-.5.3-.5.6V19.7c0 .5.4 1 1 .7z"/></svg>
-            </button>
+          <div class="brand-title">
+            <span class="large">성남시행사 AI 파인더</span>
+            <span class="small">SEAIF</span>
           </div>
         </div>
-      </main>
-    </div>
+        <div class="flex items-center gap-2">
+          <button id="paletteBtn" class="icon-button" aria-label="브랜드 색 설정">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a5 5 0 01-5-5 7 7 0 117 7z"/><circle cx="6.5" cy="11.5" r="1.5"/><circle cx="9.5" cy="7.5" r="1.5"/><circle cx="14.5" cy="7.5" r="1.5"/><circle cx="17.5" cy="11.5" r="1.5"/></svg>
+          </button>
+          <button id="themeToggle" class="icon-button theme-toggle" aria-label="테마 전환">
+            <svg id="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <svg id="moon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="brandPanel" class="popover">
+        <div class="text-sm font-semibold mb-2">브랜드 컬러 (씨앗) 선택</div>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <button class="chip" data-seed="#6366F1">Indigo (기본)</button>
+          <button class="chip" data-seed="#0EA5E9">Cyan</button>
+          <button class="chip" data-seed="#10B981">Emerald</button>
+          <button class="chip" data-seed="#8B5CF6">Purple</button>
+        </div>
+        <label class="text-sm block mb-2">사용자 지정 색상</label>
+        <div class="flex items-center gap-3">
+          <input id="customSeed" type="color" value="#6366F1" class="w-10 h-10 rounded-[12px] border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)]"/>
+          <input id="customSeedHex" type="text" value="#6366F1" class="flex-1 text-sm px-2 py-2 rounded-[10px] border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]"/>
+          <button id="applySeed" class="chip">적용</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="chat" id="chat">
+      <div id="chatList" class="chat-list">
+        <div class="flex justify-start"><div class="bubble assistant">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-6 h-6 rounded-full" style="background:linear-gradient(90deg,#34D399,#06B6D4)"></div>
+            <span class="text-xs opacity-70 font-medium">AI 어시스턴트</span>
+          </div>
+          안녕하세요! 🎉<br/>성남시의 다양한 행사와 이벤트 정보를 찾아드립니다. 궁금한 점을 물어보세요!
+        </div></div>
+      </div>
+
+      <div class="composer">
+        <div class="chips" id="chips">
+          <button class="chip" data-text="이번 주말 성남 행사">🎪 주말 행사</button>
+          <button class="chip" data-text="성남 문화행사">🎭 문화행사</button>
+          <button class="chip" data-text="성남시 축제">🎊 축제 정보</button>
+        </div>
+        <div class="composer-row">
+          <div id="moreWrap" class="relative">
+            <button id="moreBtn" class="icon-button" aria-label="추가 옵션">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
+            <div id="fabDial" class="fab-dial" aria-label="빠른 작업 메뉴">
+              <button class="mini-fab" data-action="attach-file" title="파일 첨부" aria-label="파일 첨부">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-8.49 8.49a5 5 0 01-7.07-7.07l8.49-8.49a3 3 0 114.24 4.24l-8.49 8.49a1 1 0 11-1.41-1.41l8.49-8.49"/></svg>
+                <span class="fab-label">파일</span>
+              </button>
+              <button class="mini-fab" data-action="attach-photo" title="사진 첨부" aria-label="사진 첨부">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16v10H4z"/><path d="M9 13l2-2 2 2 3-3 3 3"/></svg>
+                <span class="fab-label">사진</span>
+              </button>
+              <button class="mini-fab" data-action="share-location" title="현재 위치 추가" aria-label="현재 위치 추가">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2v2m0 12v6m10-10h-2M4 12H2m14.24 5.76l-1.42-1.42M7.17 5.17L5.76 3.76"/></svg>
+                <span class="fab-label">위치</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <input id="input" class="input" placeholder="무엇이든 물어보세요..." maxlength="500" />
+          </div>
+          <button id="send" class="send" data-compact="true" aria-label="메시지 전송">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.4-8.4c.5-.2.5-.9 0-1.2L3.4 2.4c-.5-.2-1 .2-1 .7v5.5c0 .3.2.6.5.6l8.6.9c.2 0 .2.2 0 .3l-8.6.9c-.3 0-.5.3-.5.6V19.7c0 .5.4 1 1 .7z"/></svg>
+            <span class="label">전송</span>
+          </button>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <script>
-    // 단일 상태: 채팅 전용
-    let chat = [
-      { role: "assistant", content: "안녕하세요! 성남의 다양한 행사, 뭐든 물어보세요 :)" }
-    ];
-    let loading = false;
+  <script type="module">
+    import { argbFromHex, themeFromSourceColor, applyTheme } from "https://esm.run/@material/material-color-utilities";
 
-    const $ = (sel, root=document)=>root.querySelector(sel);
+    const THEME_KEY = 'seaif_theme';
+    const root = document.documentElement;
+    const appBar = document.getElementById('appBar');
+    const themeToggle = document.getElementById('themeToggle');
+    const sun = document.getElementById('sun');
+    const moon = document.getElementById('moon');
 
-    function appendBubble(role, content){
-      const list = $("#chat-list");
-      const wrap = document.createElement("div");
-      const isUser = role === "user";
-      wrap.className = `flex my-2 ${isUser ? "justify-end" : "justify-start"} bubble-enter`;
-      wrap.innerHTML = `
-        <div class="max-w-[75%] px-4 py-3 text-white rounded-2xl ${isUser ? 'bg-[color:var(--primary)] rounded-br-none' : 'bg-gray-400 rounded-bl-none'}">
-          ${content}
-        </div>
-      `;
-      list.appendChild(wrap);
-      // 작은 등장 애니메이션
-      requestAnimationFrame(()=>{
-        wrap.classList.add("bubble-enter-active");
-        wrap.classList.remove("bubble-enter");
-      });
-      list.scrollTo({ top:list.scrollHeight, behavior:"smooth" });
+    let currentSeed = localStorage.getItem('seaif_seed') || '#6366F1';
+
+    function isDark(){ return root.getAttribute('data-theme') === 'dark'; }
+
+    function applyThemeFromSeed(hex){
+      try {
+        const theme = themeFromSourceColor(argbFromHex(hex));
+        applyTheme(theme, { target: root, dark: isDark() });
+        document.documentElement.style.setProperty('--gradient-primary', `linear-gradient(135deg, var(--md-sys-color-primary) 0%, color-mix(in oklab, var(--md-sys-color-primary) 85%, #ffffff) 50%, color-mix(in oklab, var(--md-sys-color-primary) 70%, #ffffff) 100%)`);
+        currentSeed = hex;
+        localStorage.setItem('seaif_seed', hex);
+      } catch(e) { console.warn('Dynamic color apply failed', e); }
     }
 
-    function renderChat(){
-      const list = $("#chat-list");
-      list.innerHTML = "";
-      chat.forEach(m => appendBubble(m.role, m.content));
+    function applyThemeMode(theme){
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem(THEME_KEY, theme);
+      const dark = theme === 'dark';
+      sun.style.display = dark ? 'none':'block';
+      moon.style.display = dark ? 'block':'none';
+      applyThemeFromSeed(currentSeed);
     }
 
-    // 모의 응답 (API 대체)
-    function enqueueMockResponse(userMsg){
-      loading = true;
-      setTimeout(()=>{
-        try{
-          const responseText = `네, '${userMsg}'와 관련된 정보를 정리해 드릴게요. 더 구체적으로 원하시면 말씀해 주세요!`;
-          chat.push({ role:"assistant", content: responseText });
-          appendBubble("assistant", responseText);
-        } catch(e){
-          chat.push({ role:"assistant", content:"죄송합니다, 오류가 발생했어요." });
-          appendBubble("assistant", "죄송합니다, 오류가 발생했어요.");
-        } finally{
-          loading = false;
-        }
-      }, 600);
+    applyThemeMode(localStorage.getItem(THEME_KEY) || 'light');
+    applyThemeFromSeed(currentSeed);
+
+    themeToggle.addEventListener('click',()=>{ applyThemeMode(isDark() ? 'light' : 'dark'); });
+
+    const chatList = document.getElementById('chatList');
+    chatList.addEventListener('scroll', ()=>{ if (chatList.scrollTop > 6) appBar.classList.add('compact'); else appBar.classList.remove('compact'); });
+
+    const paletteBtn = document.getElementById('paletteBtn');
+    const brandPanel = document.getElementById('brandPanel');
+    const customSeed = document.getElementById('customSeed');
+    const customSeedHex = document.getElementById('customSeedHex');
+    const applySeed = document.getElementById('applySeed');
+
+    function togglePanel(){ brandPanel.classList.toggle('open'); }
+    paletteBtn.addEventListener('click', (e)=>{ e.stopPropagation(); togglePanel(); });
+    document.addEventListener('click', (e)=>{ if(!brandPanel.contains(e.target) && e.target !== paletteBtn){ brandPanel.classList.remove('open'); }});
+
+    brandPanel.addEventListener('click', (e)=>{ const btn = e.target.closest('.chip'); if(btn && btn.dataset.seed){ customSeed.value = btn.dataset.seed; customSeedHex.value = btn.dataset.seed; applyThemeFromSeed(btn.dataset.seed); }});
+    customSeed.addEventListener('input', ()=>{ customSeedHex.value = customSeed.value; });
+    customSeedHex.addEventListener('input', ()=>{ if(/^#([0-9a-fA-F]{6})$/.test(customSeedHex.value)) customSeed.value = customSeedHex.value; });
+    applySeed.addEventListener('click', ()=>{ if(/^#([0-9a-fA-F]{6})$/.test(customSeed.value)) applyThemeFromSeed(customSeed.value); });
+
+    const input = document.getElementById('input');
+    const send = document.getElementById('send');
+    const chips = document.getElementById('chips');
+
+    function escapeHTML(str){ return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#039;'}[m])); }
+
+    function updateSend(){
+      const hasText = input.value.trim().length > 0;
+      send.setAttribute('data-compact', hasText ? 'false' : 'true');
+
+      const labelEl = send.querySelector('.label');
+      if (labelEl) labelEl.setAttribute('aria-hidden', hasText ? 'false' : 'true');
+    }
+    input.addEventListener('input', updateSend);
+    input.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); sendMessage(); } });
+    send.addEventListener('click', sendMessage);
+    chips.addEventListener('click', (e)=>{ const btn = e.target.closest('.chip'); if(!btn) return; input.value = btn.dataset.text || ''; updateSend(); input.focus(); });
+
+    function addBubble(role, html){
+      const row = document.createElement('div');
+      row.className = 'flex ' + (role === 'user' ? 'justify-end' : 'justify-start');
+      row.innerHTML = `<div class="bubble ${role}">${html}</div>`;
+      chatList.appendChild(row);
+      chatList.scrollTo({ top: chatList.scrollHeight, behavior: 'smooth' });
     }
 
-    // 전송 로직 (채팅 전용)
-    const chatInput = $("#chat-input");
-    const chatSend  = $("#chat-send");
-
-    function sendChat(){
-      const msg = chatInput.value.trim();
-      if(!msg || loading) return;
-
-      // iMessage 느낌: 입력창에서 말풍선으로 "자연스럽게 이동"하는 연출
-      // 1) 입력값 확보 후 입력창 초기화
-      chatInput.value = "";
-
-      // 2) 실제 말풍선 추가
-      chat.push({ role:"user", content: msg });
-      appendBubble("user", msg);
-
-      // 3) 모의 응답
-      enqueueMockResponse(msg);
+    let typingEl = null;
+    function showTyping(){
+      const row = document.createElement('div');
+      row.className = 'flex justify-start';
+      row.innerHTML = `
+        <div class="bubble assistant">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-5 h-5 rounded-full" style="background:linear-gradient(90deg,#34D399,#06B6D4)"></div>
+            <span class="text-xs opacity-70">입력 중...</span>
+          </div>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>`;
+      chatList.appendChild(row);
+      typingEl = row;
+      chatList.scrollTo({ top: chatList.scrollHeight, behavior: 'smooth' });
     }
+    function hideTyping(){ if (typingEl) typingEl.remove(); typingEl = null; }
 
-    chatSend.addEventListener("click", sendChat);
-    chatInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter" && !e.isComposing){
-        e.preventDefault();
-        sendChat();
+    // 행사 카드 렌더링
+    function renderEventCard(ev){
+      if(!ev || Object.keys(ev).length === 0){
+        return `<div class="text-sm opacity-80">관련된 행사를 찾지 못했어요. 키워드를 조금 바꿔보시겠어요? (예: 날짜/지역/분야 추가)</div>`;
       }
-    });
+      const title = escapeHTML(ev.title || '제목 미상');
+      const category = escapeHTML(ev.category || '분류 정보 없음');
+      const date = escapeHTML(ev.date || ev.datetime || ev.period || '일정 정보 없음');
+      const location = escapeHTML(ev.location || ev.place || '장소 정보 없음');
+      const desc = escapeHTML(ev.deep_data || ev.description || '');
 
-    // 초기 렌더
-    renderChat();
+      return `
+      <div class="mt-2 p-3 rounded-[16px] border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] shadow-sm">
+        <div class="text-base font-semibold mb-1" style="letter-spacing:-0.01em">${title}</div>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 text-sm opacity-80">
+          <div>📂 ${category}</div>
+          <div>📅 ${date}</div>
+          <div>📍 ${location}</div>
+        </div>
+        ${desc ? `<div class="mt-2 text-sm leading-6">${desc}</div>` : ``}
+      </div>`;
+    }
+
+    function renderKeywords(kw = []){
+      if(!kw || kw.length === 0) return '';
+      const pills = kw.slice(0,8).map(k => `<span class="px-2 py-1 rounded-full border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] text-xs">${escapeHTML(k)}</span>`).join(' ');
+      return `<div class="mt-2 flex flex-wrap gap-1 items-center">${pills}</div>`;
+    }
+
+    async function sendMessage(){
+      const text = input.value.trim();
+      if(!text) return;
+
+      // 사용자 말풍선
+      addBubble('user', escapeHTML(text));
+      input.value = '';
+      updateSend();
+
+      // 타이핑 표시
+      showTyping();
+
+      try{
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await res.json();
+        hideTyping();
+
+        // 백엔드 응답 스키마에 맞춰 파싱
+        const payload = data.response || {};
+        const keywords = payload.keywords || [];
+        const event = payload.recommended_event || {};
+        const reason = payload.reason;
+
+        // 어시스턴트 말풍선 콘텐츠 조립
+        let html = '';
+        if (keywords && keywords.length){
+          html += `<div class="text-sm opacity-70 mb-1">🔎 추출된 키워드</div>${renderKeywords(keywords)}`;
+        }
+        if (reason){
+          html += `<div class="mt-3">${escapeHTML(reason)}</div>`;
+        }
+        html += renderEventCard(event);
+
+        addBubble('assistant', html);
+
+      } catch(err){
+        hideTyping();
+        addBubble('assistant', `
+          <div class="text-sm">요청 처리 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.</div>
+          <div class="mt-2 text-xs opacity-70">${escapeHTML(String(err))}</div>
+        `);
+      }
+    }
+
+    updateSend();
+
+    // ====== FAB Speed Dial logic (anchored) ======
+    const fabDial = document.getElementById('fabDial');
+    const moreBtn = document.getElementById('moreBtn');
+    const moreWrap = document.getElementById('moreWrap');
+
+    let dialOpen = false;
+    function toggleDial(force){ dialOpen = typeof force === 'boolean' ? force : !dialOpen; fabDial.classList.toggle('open', dialOpen); }
+    moreBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleDial(); });
+    document.addEventListener('click', (e)=>{ if(dialOpen && !moreWrap.contains(e.target)){ toggleDial(false); } });
+
+    // Close on viewport or IME resize (to avoid awkward overlaps)
+    const ro = new ResizeObserver(()=>{ toggleDial(false); });
+    ro.observe(document.body);
   </script>
 </body>
 </html>
