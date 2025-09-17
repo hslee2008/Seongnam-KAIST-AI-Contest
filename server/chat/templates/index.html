@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성남시 행사 안내 챗봇</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div id="chatbot-container">
+        <h1>성남시 행사 추천 챗봇</h1>
+        <div id="chat-window">
+            <div class="bot-message">안녕하세요! 성남시 행사 추천봇입니다. 원하는 행사를 말씀해주세요!</div>
+        </div>
+        <div id="loading" class="loading" style="display: none;">로딩 중...</div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="예: 가족과 함께 갈 행사 추천해줘">
+            <button id="send-btn">전송</button>
+        </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
