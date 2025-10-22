@@ -12,7 +12,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-openai_client = AsyncOpenAI(api_key='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') 
+openai_client = AsyncOpenAI(api_key='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') 
 
 events_data = []
 
