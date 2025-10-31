@@ -1,7 +1,7 @@
 import subprocess
 import time
 from bs4 import BeautifulSoup
-from utils.date_parsing import is_within_month
+from ..utils.date_parsing import is_within_month
 
 # 소스: 맹산환경생태학습원
 # 링크: https://mpark.seongnam.go.kr:10003

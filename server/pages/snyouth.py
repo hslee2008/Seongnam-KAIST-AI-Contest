@@ -1,6 +1,6 @@
 import subprocess
 from bs4 import BeautifulSoup
-from server.utils.date_parsing import is_within_month
+from ..utils.date_parsing import is_within_month
 
 # 소스: 성남시청소년재단
 # 링크: https://www.snyouth.or.kr/

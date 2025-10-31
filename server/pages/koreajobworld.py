@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 import re
 from bs4 import BeautifulSoup
 
-from utils.url_parsing import extract_http_url_from_js
+from ..utils.url_parsing import extract_http_url_from_js
 
 # 소스: 한국잡월드
 # 링크: https://www.koreajobworld.or.kr/
